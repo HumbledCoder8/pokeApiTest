@@ -1,0 +1,121 @@
+.poke-api-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    font-family: 'Arial', sans-serif;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    max-width: 400px;
+    margin: 2rem auto;
+  }
+
+  .poke-api-container h1 {
+    color: black;
+    margin: 0; /* Remove default margin to align with GIF */
+    font-size: 1.5rem; /* Reduced font size */
+  }
+
+  .header-container {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Increased gap for better spacing */
+  }
+
+  .header-gif {
+    height: 40px; /* Increased fixed height */
+    width: auto; /* Maintains aspect ratio */
+  }
+  
+  .poke-search-form {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .poke-input {
+    flex-grow: 1;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+  
+  .poke-input:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+  }
+  
+  .poke-button {
+    padding: 0.75rem 1.5rem;
+    margin-top: 5%;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #3498db;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+  }
+  
+  .poke-button:hover {
+    background-color: #2980b9;
+  }
+  
+  .poke-button:active {
+    transform: scale(0.98);
+  }
+  
+  /* Add some responsive design */
+  @media (max-width: 480px) {
+    .poke-search-form {
+      flex-direction: column;
+    }
+  
+    .poke-input,
+    .poke-button {
+      width: 100%;
+    }
+  }
+
+.pokemon-info {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.pokemon-name {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+  text-transform: capitalize;
+}
+
+.pokemon-type {
+  font-size: 18px;
+  color: #fff;
+  /*background-color: #e0e0e0; background color is being currently generated dynamically.*/ 
+  padding: 5px 10px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.pokemon-sprite {
+    width: 111px; /* Adjust size as needed */
+    height: 111px; /* Adjust size as needed */
+    width:auto;
+    height:auto;
+    margin-bottom: 10px; /* Add some space below the sprite */
+    margin-left: auto;
+    margin-right: auto;
+  }
