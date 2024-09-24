@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import './pokeApi.css';
 import pokeBallGif from './assets/pokeballgif.gif'; // Adjust the path as needed
+import {usePokemonCache} from './pokemonCache.jsx';
 
 
 const typeColors = {
@@ -27,6 +28,8 @@ const typeColors = {
 function PokeApi() {
   const [inputValue, setInputValue] = useState('');
   const [pokemonData, setPokemonData] = useState(null);
+  const [error, setError] = useState(null);
+  const {addToCache, getFromCache} = usePokemonCache();
 
   const getTypeColor = (type) => {
      return typeColors[type] || '#777' //defaults to a gray color.
@@ -34,14 +37,36 @@ function PokeApi() {
 
   const handleSubmit = async () => {
     try {
+      if(!inputValue.trim()){
+        throw new Error("Please enter a Pokemon name.");
+      }
+
+      setError(null);
+
+      const pokemonName = inputValue.toLowerCase();
+      const cachedData = getFromCache(pokemonName);
+
+      if(cachedData) {
+        console.log('Data retrieved from cache');
+        setPokemonData(cachedData);
+        return; //important so to skip the const response, instead of using an else. 
+      }
+
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${inputValue.toLowerCase()}`);
+      if (!response.ok) {
+        throw new Error("That's not a pokemon.");
+      }
+      
       const data = await response.json();
-      console.log(data);
+      console.log("data from the api: ", data);
       // Handle the Pokemon data here
       setPokemonData(data); //data is being set to pokemonData, so that the data can be tracked across 
       //space and time. otherwise it just goes..."poof".
+      addToCache(pokemonName, data);
     } catch (error) {
       console.error('Error:', error);
+      setError('Pokemon not found.');
+      setPokemonData(null);
     }
   };
 
@@ -82,7 +107,7 @@ function PokeApi() {
       />
       <button className="poke-button" onClick={handleSubmit}>Search Pokemon</button>
    
-
+    {error && <div className="error-message">{error}</div>}
     {pokemonData && renderPokemonInfo(pokemonData)}
 
     </div>
@@ -90,3 +115,6 @@ function PokeApi() {
 }
 
 export default PokeApi;
+
+
+//must retrieve from cachÉ but also add logic to add to cachÉ.
