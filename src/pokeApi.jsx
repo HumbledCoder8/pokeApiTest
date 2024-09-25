@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from "react";
+//ntegrate:, habitat, moves, etc. -cry(audio component), -pokemon evolutions
+
+
+import React, { useState, useCallback } from "react";
 import './pokeApi.css';
 import pokeBallGif from './assets/pokeballgif.gif'; // Adjust the path as needed
 import {usePokemonCache} from './pokemonCache.jsx';
-
+import useDebounce from './useDebounce.jsx';
+import PokemonSpriteStuff from './pokemonSpriteStuff.jsx';
 
 const typeColors = {
     normal: '#A8A77A',
@@ -31,9 +35,14 @@ function PokeApi() {
   const [error, setError] = useState(null);
   const {addToCache, getFromCache} = usePokemonCache();
 
+
   const getTypeColor = (type) => {
      return typeColors[type] || '#777' //defaults to a gray color.
   }
+
+  //this returns a const 
+
+
 
   const handleSubmit = async () => {
     try {
@@ -70,23 +79,33 @@ function PokeApi() {
     }
   };
 
+  const debouncedHandleSubmit = useDebounce(handleSubmit, 300)
+
   const handleKeyDown = (event) => {
     if(event.key == 'Enter'){
-        handleSubmit();
+        debouncedHandleSubmit();
+        //handleSubmit();
     }
   }
 
+  //important function that renders all important information about the pokemon
   const renderPokemonInfo = (pokemonData) => {
+    
     const typeName = pokemonData.types[0].type.name;
+    //const audioUrl = pokemonData.cries.latest; Not available for now
+    const audioUrl = `https://play.pokemonshowdown.com/audio/cries/${pokemonData.name.toLowerCase()}.ogg`;
+    const spriteUrl = pokemonData.sprites.front_default;
     return (
       <div className="pokemon-info">
         <div className="pokemon-name">{pokemonData.name}</div>
+        <div className="pokemon-id">#{pokemonData.id}</div>
         <div className="pokemon-type" style={{backgroundColor: getTypeColor(typeName)}}>
           {typeName}
         </div>
-        <div className="pokemon-sprite">
-          <img src={pokemonData.sprites.front_default} alt={pokemonData.name} />
-        </div>
+        <PokemonSpriteStuff 
+          pokemonName = {pokemonData.name}
+          spriteUrl = {spriteUrl}
+          audioUrl = {audioUrl} />
       </div>
     );
   };
@@ -105,7 +124,7 @@ function PokeApi() {
         onChange={(e) => setInputValue(e.target.value)}
         placeholder="Enter Pokemon name"
       />
-      <button className="poke-button" onClick={handleSubmit}>Search Pokemon</button>
+      <button className="poke-button" onClick={debouncedHandleSubmit}>Search Pokemon</button>
    
     {error && <div className="error-message">{error}</div>}
     {pokemonData && renderPokemonInfo(pokemonData)}

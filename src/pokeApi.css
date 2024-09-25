@@ -96,8 +96,16 @@
   font-size: 24px;
   font-weight: bold;
   color: #333;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   text-transform: capitalize;
+}
+
+
+.pokemon-id {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
 .pokemon-type {
@@ -109,6 +117,8 @@
   display: inline-block;
   margin-bottom: 5px;
 }
+
+
 
 .pokemon-sprite {
     width: 111px; /* Adjust size as needed */

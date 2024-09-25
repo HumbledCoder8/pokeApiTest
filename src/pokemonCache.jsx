@@ -1,3 +1,6 @@
+//rewrite from scratch to prove understanding.
+
+
 import React, { createContext, useContext, useState } from 'react';
 
 const PokemonCacheContext = createContext();
