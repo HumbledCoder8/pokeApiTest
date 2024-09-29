@@ -1,10 +1,13 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import './pokeApi.css';
 
 const PokemonSpriteStuff = ({ pokemonName, spriteUrl, audioUrl }) => {
   const audioRef = React.useRef(null);
   const [audioError, setAudioError] = useState(false);
   
+  useEffect(() => {
+    setAudioError(false);
+  }, [pokemonName, spriteUrl, audioUrl]);
 
 
 
@@ -22,7 +25,7 @@ const PokemonSpriteStuff = ({ pokemonName, spriteUrl, audioUrl }) => {
   };
 
   const handleAudioError = () => {
-    console.error("audio doesn't work");
+    console.error("audio doesn't work2");
     console.error(audioUrl);
     setAudioError(true);
   }

@@ -136,3 +136,15 @@
     margin-top: 10px;
     font-weight: bold;
   }
+
+
+  .arrow {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 15px solid #333; /* Color of the arrow */
+    display: inline-block;
+    margin: 0 10px; /* Adjust spacing as needed */
+  }
+  

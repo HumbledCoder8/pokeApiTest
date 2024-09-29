@@ -1,0 +1,85 @@
+div.evolution-chain{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Space between items */
+   
+    background-color: #f0f0f0; /* Light grey background */
+    border-radius: 10px;
+    width:100%;
+    max-width: 600px; /* Adjust as needed */
+    margin: 20px 0; /* Center the container */
+    box-sizing: border-box;
+
+  }
+
+  .evolution-chain h1{
+    font-size: 1em;
+    margin-top:10px;
+    margin-bottom:5px;
+    text-align: center;
+
+    
+  }
+
+  .evolution-chain-container{
+    display: flex;  
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    width: 100%;
+    max-width: 1000px; /* Adjust as needed */
+    margin: 5 auto;
+  
+    white-space: nowrap; /* Prevents wrapping */
+  }
+
+  .evolution-chain span {
+    flex: 0 1 auto; /* Allow spans to grow and shrink */
+    min-width: 0; /* Allow shrinking below content size */
+    text-align: center;
+    color: #333;
+    font-weight: bold;
+    padding: 4px 6px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Add ellipsis for overflowing text */
+
+    /* Dynamic font sizing */
+    font-size: clamp(10px, 2vw + 0.5rem, 16px);
+    
+    /* Ensure the content fits */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .arrow-horizontal {
+    flex: 0 0 auto; /* Don't allow arrows to grow or shrink */
+
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 12px solid #333;
+    display: inline-block;
+  }
+  /* For 2-item evolution chains */
+  .evolution-chain:has(span:nth-child(3):last-child) {
+    justify-content: space-around;
+  }
+  
+  /* For 3-item evolution chains */
+  .evolution-chain:has(span:nth-child(5)) {
+    justify-content: space-between;
+  }     
+
+  .arrow-gif {
+    display: inline-block;
+    width: 30px; /* Adjust as needed */
+    height: 30px; /* Adjust as needed */
+    margin: 0 10px; /* Adjust spacing as needed */
+    vertical-align: middle;
+  }
