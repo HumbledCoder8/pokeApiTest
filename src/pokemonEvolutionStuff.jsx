@@ -3,7 +3,9 @@ import './pokemonEvolutionStuff.css';
 import arrow from './assets/arrow.gif';
 
 //file for rendering the evolution stuff. There will be 2 arrows, one on each side of the pokemon 
+const MAIN_API_ENDPOINT = "https://pokeapi.co/api/v2/pokemon/";
 
+//YOU WILL NEED TO CACHE LATER. DONT FORGET TO DO THAT.
 export async function organizeEvolutionData(speciesUrl) {
     try {
       // Fetch species data
@@ -17,14 +19,32 @@ export async function organizeEvolutionData(speciesUrl) {
       const evolutionNames = [];
       let currentStage = evolutionChainData.chain;
   
-      // Traverse the evolution chain from base to final form
+      // First, create an array with just the names
       while (currentStage) {
-        evolutionNames.push(currentStage.species.name);
-        currentStage = currentStage.evolves_to[0]; // Move to the next evolution
+        evolutionNames.push({
+            name: currentStage.species.name
+        });
+        currentStage = currentStage.evolves_to[0];
       }
-      
-      console.log("Evolution Names: ", evolutionNames);
-      return evolutionNames;
+  
+      // Now, fetch additional data for each Pokémon
+      const evolutionData = await Promise.all(evolutionNames.map(async (pokemon) => {
+        try {
+          const pokemonResponse = await fetch(`${MAIN_API_ENDPOINT}${pokemon.name}`);
+          const pokemonData = await pokemonResponse.json();
+          return {
+            ...pokemon,
+            speciesId: pokemonData.id,
+            spriteUrl: pokemonData.sprites.front_default
+          };
+        } catch (error) {
+          console.error(`Error fetching data for ${pokemon.name}:`, error);
+          return pokemon; // Return the original object if there's an error
+        }
+      }));
+  
+      console.log("Evolution Data: ", evolutionData);
+      return evolutionData; //will be an object now 
     } catch (error) {
       console.error("Error fetching evolution chain:", error);
       return [];
@@ -43,8 +63,12 @@ export async function organizeEvolutionData(speciesUrl) {
             <div className="evolution-chain-container">
                 {evolutionData.map((pokemon, index) => (
                 <React.Fragment key={index}>
-
-                    <span>{pokemon}</span>
+                    <div className="pokemon-details">
+                            #{pokemon.speciesId}
+                        <span>{pokemon.name}</span>
+                        <img src={pokemon.spriteUrl}></img>
+                    </div>
+                   
                     {index < evolutionData.length - 1 && (
                     <img src={arrow} alt="Evolution arrow" className="arrow-gif"/>
                     )}

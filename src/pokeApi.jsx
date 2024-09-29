@@ -44,8 +44,10 @@ function PokeApi() {
     async function fetchEvolutionData() {
       if (pokemonData && pokemonData.species && pokemonData.species.url) {
         try {
-          const data = await organizeEvolutionData(pokemonData.species.url);
-          setEvolutionData(data);
+          //organizeEvolutionData arranges the pokemon names in order. eg: [bulbasaur,ivysaur,venasaur]
+          //This array should just be 1 component. We need the #, 
+          const evolutionData = await organizeEvolutionData(pokemonData.species.url);
+          setEvolutionData(evolutionData);
         } catch (error) {
           console.error("Error fetching evolution data:", error);
           setEvolutionData(null);

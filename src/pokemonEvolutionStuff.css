@@ -30,9 +30,14 @@ div.evolution-chain{
     padding: 5px;
     width: 100%;
     max-width: 1000px; /* Adjust as needed */
-    margin: 5 auto;
+    margin: 5    auto;
   
     white-space: nowrap; /* Prevents wrapping */
+  }
+
+  div.pokemon-details{
+    color: black;
+    text-align: center;
   }
 
   .evolution-chain span {
@@ -82,4 +87,5 @@ div.evolution-chain{
     height: 30px; /* Adjust as needed */
     margin: 0 10px; /* Adjust spacing as needed */
     vertical-align: middle;
+    
   }
