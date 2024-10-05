@@ -1,26 +1,53 @@
-//rewrite from scratch to prove understanding.
-
-
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
 
 const PokemonCacheContext = createContext();
 
 export function PokemonCacheProvider({ children }) {
-  const [cache, setCache] = useState({});
+  const [cache, setCache] = useState({
+    pokemon: {},
+    evolutionChains: {}
+  });
 
-  const addToCache = (pokemonName, data) => {
+  const addPokemonToCache = useCallback((pokemonName, data, evolutionChainId = null) => {
     setCache(prevCache => ({
       ...prevCache,
-      [pokemonName.toLowerCase()]: data
+      pokemon: {
+        ...prevCache.pokemon,
+        [pokemonName.toLowerCase()]: {
+          ...data,
+          evolutionChainId
+        }
+      }
     }));
-  };
+  }, []);
 
-  const getFromCache = (pokemonName) => {
-    return cache[pokemonName.toLowerCase()];
+  const getPokemonFromCache = useCallback((pokemonName) => {
+    return cache.pokemon[pokemonName.toLowerCase()];
+  }, [cache.pokemon]);
+
+  const addEvolutionChainToCache = useCallback((evolutionId, pokemonArray) => {
+    setCache(prevCache => ({
+      ...prevCache,
+      evolutionChains: {
+        ...prevCache.evolutionChains,
+        [evolutionId]: pokemonArray
+      }
+    }));
+  }, []);
+
+  const getEvolutionChainFromCache = useCallback((evolutionId) => {
+    return cache.evolutionChains[evolutionId];
+  }, [cache.evolutionChains]);
+
+  const value = {
+    addPokemonToCache,
+    getPokemonFromCache,
+    addEvolutionChainToCache,
+    getEvolutionChainFromCache
   };
 
   return (
-    <PokemonCacheContext.Provider value={{ addToCache, getFromCache }}>
+    <PokemonCacheContext.Provider value={value}>
       {children}
     </PokemonCacheContext.Provider>
   );

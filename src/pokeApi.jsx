@@ -35,18 +35,26 @@ function PokeApi() {
   const [inputValue, setInputValue] = useState('');
   const [pokemonData, setPokemonData] = useState(null);
   const [error, setError] = useState(null);
-  const {addToCache, getFromCache} = usePokemonCache();
+  const {addPokemonToCache,getPokemonFromCache, addEvolutionChainToCache,getEvolutionChainFromCache} = usePokemonCache();
 
   const [evolutionData,setEvolutionData] = useState(null);
 
 
+
+//useEffect gets called whenever the dependency (pokemonData in this case) is updated.
   useEffect(() => {
     async function fetchEvolutionData() {
       if (pokemonData && pokemonData.species && pokemonData.species.url) {
         try {
           //organizeEvolutionData arranges the pokemon names in order. eg: [bulbasaur,ivysaur,venasaur]
           //This array should just be 1 component. We need the #, 
-          const evolutionData = await organizeEvolutionData(pokemonData.species.url);
+          //const pokemonName = pokemonData.name.toLowerCase();
+          const evolutionData = await organizeEvolutionData(
+            pokemonData,
+            addPokemonToCache,
+            getPokemonFromCache,
+            addEvolutionChainToCache,
+            getEvolutionChainFromCache); //send only pokemonData, must process species.url inside function
           setEvolutionData(evolutionData);
         } catch (error) {
           console.error("Error fetching evolution data:", error);
@@ -69,7 +77,10 @@ function PokeApi() {
 
   //handle the pokemonEvolutionStuff component
 
-  
+  const handlePokemonClick = (pokemonName) => {
+    setInputValue(pokemonName);
+    handleSubmit(pokemonName); //perhaps use debounced in future?
+  }
 
   const handleSubmit = async () => {
     try {
@@ -80,10 +91,10 @@ function PokeApi() {
       setError(null);
 
       const pokemonName = inputValue.toLowerCase();
-      const cachedData = getFromCache(pokemonName);
+      const cachedData = getPokemonFromCache(pokemonName);
 
       if(cachedData) {
-        console.log('Data retrieved from cache');
+        console.log("cachedData from handleSubmit: ", cachedData);
         setPokemonData(cachedData);
         return; //important so to skip the const response, instead of using an else. 
       }
@@ -98,7 +109,7 @@ function PokeApi() {
       // Handle the Pokemon data here
       setPokemonData(data); //data is being set to pokemonData, so that the data can be tracked across 
       //space and time. otherwise it just goes..."poof".
-      addToCache(pokemonName, data);
+      addPokemonToCache(pokemonName, data);
     } catch (error) {
       console.error('Error:', error);
       setError('Pokemon not found.');
@@ -171,7 +182,7 @@ function PokeApi() {
   
 
       {evolutionData && evolutionData.length > 1 && (
-        <EvolutionaryComponent evolutionData={evolutionData} />
+        <EvolutionaryComponent evolutionData={evolutionData} onPokemonClick={handlePokemonClick} />
       )}
 
     </div>
